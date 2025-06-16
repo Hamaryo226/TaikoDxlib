@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{646882A1-AE9A-4058-8E83-911EF54C930C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>TaikoNaut</RootNamespace>
+    <AssemblyName>TaikoNaut</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Build\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="TaikoNaut\Common\Debug.cs" />
+    <Compile Include="TaikoNaut\Common\Program.cs" />
+    <Compile Include="TaikoNaut\Common\ResourceLoader.cs" />
+    <Compile Include="TaikoNaut\Config\KeyBind.cs" />
+    <Compile Include="TaikoNaut\Scenes\EnsoGame\EnsoGameScene.cs" />
+    <Compile Include="TaikoNaut\Scenes\EnsoGame\EnsoGame_Gauge.cs" />
+    <Compile Include="TaikoNaut\Scenes\EnsoGame\EnsoGame_Lane.cs" />
+    <Compile Include="TaikoNaut\Scenes\EnsoGame\EnsoGame_MiniTaiko.cs" />
+    <Compile Include="TaikoNaut\SongSystem\SongData.cs" />
+    <Compile Include="TaikoNaut\SongSystem\TJA.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Amaoto\Amaoto.csproj">
+      <Project>{595495d3-6046-45f5-b486-b1161605fe6e}</Project>
+      <Name>Amaoto</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DxLibWDotNet">
+      <HintPath>Build\dll\DxLibWDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir $(TargetDir)dll
+move $(TargetDir)Amaoto.dll $(TargetDir)dll\
+move $(TargetDir)Amaoto.pdb $(TargetDir)dll\
+move $(TargetDir)DxLibW.dll $(TargetDir)dll\
+move $(TargetDir)DxLibW_x64.dll $(TargetDir)dll\
+move $(TargetDir)DxLibWDotNet.dll $(TargetDir)dll\
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>

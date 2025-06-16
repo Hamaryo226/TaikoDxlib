@@ -1,0 +1,8 @@
+C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\bin\Debug\Amaoto.dll
+C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\bin\Debug\Amaoto.pdb
+C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\bin\Debug\DxLibWDotNet.dll
+C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\obj\Debug\Amaoto.csproj.AssemblyReference.cache
+C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\obj\Debug\Amaoto.csproj.CoreCompileInputs.cache
+C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\obj\Debug\Amaoto.csproj.Up2Date
+C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\obj\Debug\Amaoto.dll
+C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\obj\Debug\Amaoto.pdb
