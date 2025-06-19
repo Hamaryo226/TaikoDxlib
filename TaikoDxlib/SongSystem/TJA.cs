@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static TaikoNaut.TaikoNaut.SongSystem.SongData;
+using static TaikoDxlib.TaikoDxlib.SongSystem.SongData;
 
-namespace TaikoNaut.TaikoNaut.SongSystem
+namespace TaikoDxlib.TaikoDxlib.SongSystem
 {
     internal class TJA
     {

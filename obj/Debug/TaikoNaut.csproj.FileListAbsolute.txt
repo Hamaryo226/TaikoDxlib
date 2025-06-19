@@ -13,3 +13,28 @@ C:\Users\0ren5\source\repos\TaikoNaut\Build\Amaoto.pdb
 C:\Users\0ren5\source\repos\TaikoNaut\obj\Debug\TaikoNaut.exe.config
 C:\Users\0ren5\source\repos\TaikoNaut\obj\Debug\TaikoNaut.csproj.Up2Date
 C:\Users\0ren5\source\repos\TaikoNaut\Build\DxLibWDotNet.dll
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Build\TaikoNaut.exe.config
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Build\TaikoNaut.exe
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Build\TaikoNaut.pdb
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Build\Amaoto.dll
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Build\DxLibWDotNet.dll
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Build\Newtonsoft.Json.dll
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Build\Amaoto.pdb
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\obj\Debug\TaikoNaut.csproj.AssemblyReference.cache
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\obj\Debug\TaikoNaut.csproj.CoreCompileInputs.cache
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\obj\Debug\TaikoNaut.csproj.Up2Date
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\obj\Debug\TaikoNaut.exe
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\obj\Debug\TaikoNaut.pdb
+C:\Users\hama\Desktop\TaikoNaut-master\Build\TaikoNaut.exe.config
+C:\Users\hama\Desktop\TaikoNaut-master\Build\TaikoNaut.exe
+C:\Users\hama\Desktop\TaikoNaut-master\Build\TaikoNaut.pdb
+C:\Users\hama\Desktop\TaikoNaut-master\Build\Amaoto.dll
+C:\Users\hama\Desktop\TaikoNaut-master\Build\DxLibWDotNet.dll
+C:\Users\hama\Desktop\TaikoNaut-master\Build\Newtonsoft.Json.dll
+C:\Users\hama\Desktop\TaikoNaut-master\Build\Amaoto.pdb
+C:\Users\hama\Desktop\TaikoNaut-master\obj\Debug\TaikoNaut.csproj.AssemblyReference.cache
+C:\Users\hama\Desktop\TaikoNaut-master\obj\Debug\TaikoNaut.exe.config
+C:\Users\hama\Desktop\TaikoNaut-master\obj\Debug\TaikoNaut.csproj.CoreCompileInputs.cache
+C:\Users\hama\Desktop\TaikoNaut-master\obj\Debug\TaikoNaut.csproj.Up2Date
+C:\Users\hama\Desktop\TaikoNaut-master\obj\Debug\TaikoNaut.exe
+C:\Users\hama\Desktop\TaikoNaut-master\obj\Debug\TaikoNaut.pdb

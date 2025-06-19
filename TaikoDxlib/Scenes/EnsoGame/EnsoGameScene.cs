@@ -6,11 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaikoNaut.TaikoNaut.Common;
-using TaikoNaut.TaikoNaut.Config;
-using TaikoNaut.TaikoNaut.SongSystem;
+using TaikoDxlib.TaikoDxlib.Common;
+using TaikoDxlib.TaikoDxlib.Config;
+using TaikoDxlib.TaikoDxlib.SongSystem;
 
-namespace TaikoNaut.TaikoNaut.Scenes.EnsoGame
+namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
 {
     internal class EnsoGameScene : Scene
     {

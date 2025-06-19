@@ -6,3 +6,19 @@ C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\obj\Debug\Amaoto.csproj.CoreCompile
 C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\obj\Debug\Amaoto.csproj.Up2Date
 C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\obj\Debug\Amaoto.dll
 C:\Users\0ren5\source\repos\TaikoNaut\Amaoto\obj\Debug\Amaoto.pdb
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\bin\Debug\Amaoto.dll
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\bin\Debug\Amaoto.pdb
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\bin\Debug\DxLibWDotNet.dll
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\obj\Debug\Amaoto.csproj.AssemblyReference.cache
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\obj\Debug\Amaoto.csproj.CoreCompileInputs.cache
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\obj\Debug\Amaoto.csproj.Up2Date
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\obj\Debug\Amaoto.dll
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\obj\Debug\Amaoto.pdb
+C:\Users\hama\Desktop\TaikoNaut-master\Amaoto\bin\Debug\Amaoto.dll
+C:\Users\hama\Desktop\TaikoNaut-master\Amaoto\bin\Debug\Amaoto.pdb
+C:\Users\hama\Desktop\TaikoNaut-master\Amaoto\bin\Debug\DxLibWDotNet.dll
+C:\Users\hama\Desktop\TaikoNaut-master\Amaoto\obj\Debug\Amaoto.csproj.AssemblyReference.cache
+C:\Users\hama\Desktop\TaikoNaut-master\Amaoto\obj\Debug\Amaoto.csproj.CoreCompileInputs.cache
+C:\Users\hama\Desktop\TaikoNaut-master\Amaoto\obj\Debug\Amaoto.csproj.Up2Date
+C:\Users\hama\Desktop\TaikoNaut-master\Amaoto\obj\Debug\Amaoto.dll
+C:\Users\hama\Desktop\TaikoNaut-master\Amaoto\obj\Debug\Amaoto.pdb

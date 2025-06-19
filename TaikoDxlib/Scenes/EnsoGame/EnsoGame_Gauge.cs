@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaikoNaut.TaikoNaut.Common;
+using TaikoDxlib.TaikoDxlib.Common;
 
-namespace TaikoNaut.TaikoNaut.Scenes.EnsoGame
+namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
 {
-    internal class EnsoGame_Lane : Scene
+    internal class EnsoGame_Gauge : Scene
     {
         public override void Enable()
         {
@@ -22,8 +22,6 @@ namespace TaikoNaut.TaikoNaut.Scenes.EnsoGame
 
         public override void Draw()
         {
-            ResourceLoader.EnsoGame_Lane_Background_1P.Draw(497, 204);
-
             base.Draw();
         }
 

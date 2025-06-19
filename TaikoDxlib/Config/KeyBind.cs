@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using static DxLibDLL.DX;
 using Amaoto;
 
-namespace TaikoNaut.TaikoNaut.Config
+namespace TaikoDxlib.TaikoDxlib.Config
 {
     //シミュレーターの操作に必要なキーのバインドに関するクラス。
     internal static class KeyBind

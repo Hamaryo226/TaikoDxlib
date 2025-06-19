@@ -38,16 +38,16 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="TaikoNaut\Common\Debug.cs" />
-    <Compile Include="TaikoNaut\Common\Program.cs" />
-    <Compile Include="TaikoNaut\Common\ResourceLoader.cs" />
-    <Compile Include="TaikoNaut\Config\KeyBind.cs" />
-    <Compile Include="TaikoNaut\Scenes\EnsoGame\EnsoGameScene.cs" />
-    <Compile Include="TaikoNaut\Scenes\EnsoGame\EnsoGame_Gauge.cs" />
-    <Compile Include="TaikoNaut\Scenes\EnsoGame\EnsoGame_Lane.cs" />
-    <Compile Include="TaikoNaut\Scenes\EnsoGame\EnsoGame_MiniTaiko.cs" />
-    <Compile Include="TaikoNaut\SongSystem\SongData.cs" />
-    <Compile Include="TaikoNaut\SongSystem\TJA.cs" />
+    <Compile Include="TaikoDxlib\Common\Debug.cs" />
+    <Compile Include="TaikoDxlib\Common\Program.cs" />
+    <Compile Include="TaikoDxlib\Common\ResourceLoader.cs" />
+    <Compile Include="TaikoDxlib\Config\KeyBind.cs" />
+    <Compile Include="TaikoDxlib\Scenes\EnsoGame\EnsoGameScene.cs" />
+    <Compile Include="TaikoDxlib\Scenes\EnsoGame\EnsoGame_Gauge.cs" />
+    <Compile Include="TaikoDxlib\Scenes\EnsoGame\EnsoGame_Lane.cs" />
+    <Compile Include="TaikoDxlib\Scenes\EnsoGame\EnsoGame_MiniTaiko.cs" />
+    <Compile Include="TaikoDxlib\SongSystem\SongData.cs" />
+    <Compile Include="TaikoDxlib\SongSystem\TJA.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Amaoto\Amaoto.csproj">

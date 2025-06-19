@@ -1,0 +1,2 @@
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\obj\Release\TaikoNaut.csproj.AssemblyReference.cache
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\obj\Release\TaikoNaut.csproj.CoreCompileInputs.cache

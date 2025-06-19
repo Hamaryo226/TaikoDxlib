@@ -6,13 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaikoNaut.TaikoNaut.Config;
-using TaikoNaut.TaikoNaut.Scenes.EnsoGame;
-using TaikoNaut.TaikoNaut.SongSystem;
+using TaikoDxlib.TaikoDxlib.Config;
+using TaikoDxlib.TaikoDxlib.Scenes.EnsoGame;
+using TaikoDxlib.TaikoDxlib.SongSystem;
 using static DxLibDLL.DX;
-using static TaikoNaut.TaikoNaut.Common.Program;
+using static TaikoDxlib.TaikoDxlib.Common.Program;
 
-namespace TaikoNaut.TaikoNaut.Common
+namespace TaikoDxlib.TaikoDxlib.Common
 {
     internal class Program
     {
@@ -64,7 +64,7 @@ namespace TaikoNaut.TaikoNaut.Common
                 SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
             }
             SetUseTransColor(FALSE);
-            SetWindowText("TaikoNaut β0.0.1");
+            SetWindowText("TaikoDxlib β0.0.1");
             SetGraphMode(1920, 1080, 32);
             SetWindowSize(1280, 720);
             ChangeWindowMode(TRUE);
@@ -86,7 +86,7 @@ namespace TaikoNaut.TaikoNaut.Common
 
             TJA = new TJA();
 
-            var data = TJA.GetSongDataFromTJA("C:\\Users\\0ren5\\source\\repos\\TaikoNaut\\Build\\Songs\\poxei DOON\\poxei◆DOON.tja");
+            var data = TJA.GetSongDataFromTJA("C:\\Users\\hama\\Desktop\\TaikoDxlib-master\\Build\\Songs\\ギャンラブ\\ギャンラブ.tja");
 
             EnsoGameScene = new EnsoGameScene();
             EnsoGameScene.NowPlayingSong = data;

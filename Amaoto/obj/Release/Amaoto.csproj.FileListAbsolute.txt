@@ -1,0 +1,9 @@
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\bin\Release\Amaoto.xml
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\bin\Release\Amaoto.dll
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\bin\Release\Amaoto.pdb
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\bin\Release\DxLibWDotNet.dll
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\obj\Release\Amaoto.csproj.AssemblyReference.cache
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\obj\Release\Amaoto.csproj.CoreCompileInputs.cache
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\obj\Release\Amaoto.csproj.Up2Date
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\obj\Release\Amaoto.dll
+C:\Users\hama\Desktop\TaikoNaut-master (1)\TaikoNaut-master\Amaoto\obj\Release\Amaoto.pdb

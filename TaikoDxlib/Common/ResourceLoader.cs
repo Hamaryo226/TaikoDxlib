@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaikoNaut.TaikoNaut.Common
+namespace TaikoDxlib.TaikoDxlib.Common
 {
     //必要な音声・画像のロード。
     internal static class ResourceLoader

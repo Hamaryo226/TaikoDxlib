@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaikoNaut.TaikoNaut.SongSystem
+namespace TaikoDxlib.TaikoDxlib.SongSystem
 {
     internal class SongData
     {
