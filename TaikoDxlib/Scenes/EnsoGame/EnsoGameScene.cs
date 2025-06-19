@@ -410,5 +410,6 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
         public EnsoGame_Lane Lane;
         public EnsoGame_Gauge Gauge;
         public EnsoGame_MiniTaiko MiniTaiko;
+        public EnsoGame_Footer Footer;
     }
 }

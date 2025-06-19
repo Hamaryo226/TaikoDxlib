@@ -16,11 +16,17 @@ namespace TaikoDxlib.TaikoDxlib.Common
 
             EnsoGame_MiniTaiko_Background_1P = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\MiniTaiko\Background_1P.png");
 
+            #region [ Footer ]
+            EnsoGame_Footer = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\Footer\0.png");
+            #endregion
             EnsoGame_Lane_Background_1P = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\Lane\Background_1P.png");
         }
 
         public static Texture EnsoGame_Notes;
         public static Texture EnsoGame_MiniTaiko_Background_1P;
+        #region [ Footer ]
+        public static Texture EnsoGame_Footer;
+        #endregion
         public static Texture EnsoGame_Lane_Background_1P;
 
         public static void LoadSound()
