@@ -11,6 +11,8 @@ using TaikoDxlib.TaikoDxlib.Scenes.EnsoGame;
 using TaikoDxlib.TaikoDxlib.SongSystem;
 using static DxLibDLL.DX;
 using static TaikoDxlib.TaikoDxlib.Common.Program;
+using TaikoNaut.TaikoDxlib.Scenes.SongSelect;
+using TaikoNaut.TaikoDxlib.Scenes.SongLoading;
 
 namespace TaikoDxlib.TaikoDxlib.Common
 {
@@ -30,6 +32,18 @@ namespace TaikoDxlib.TaikoDxlib.Common
 
                 switch (nowScene)
                 {
+                    case NowScene.SongSelect:
+                        {
+                            SongSelectScene.Draw();
+                            SongSelectScene.Update();
+                        }
+                        break;
+                    case NowScene.SongLoading:
+                        {
+                            SongLoadingScene.Draw();
+                            SongLoadingScene.Update();
+                        }
+                        break;
                     case NowScene.EnsoGame:
                         {
                             EnsoGameScene.Draw();
@@ -66,7 +80,7 @@ namespace TaikoDxlib.TaikoDxlib.Common
             SetUseTransColor(FALSE);
             SetWindowText("TaikoDxlib β0.0.1");
             SetGraphMode(1920, 1080, 32);
-            SetWindowSize(1280, 720);
+            SetWindowSize(1920, 1080);
             ChangeWindowMode(TRUE);
             SetWindowSizeChangeEnableFlag(TRUE);
             SetAlwaysRunFlag(TRUE);
@@ -86,7 +100,10 @@ namespace TaikoDxlib.TaikoDxlib.Common
 
             TJA = new TJA();
 
-            var data = TJA.GetSongDataFromTJA("C:\\Users\\hama\\Desktop\\TaikoDxlib-master\\Build\\Songs\\ギャンラブ\\ギャンラブ.tja");
+            var data = TJA.GetSongDataFromTJA("C:\\Users\\hama\\Desktop\\TaikoDxlib-master\\Build\\Songs\\灼熱にて純情(wii-wii-woo)\\灼熱にて純情(wii-wii-woo).tja");
+
+            SongLoadingScene = new SongLoadingScene();
+            SongSelectScene = new SongSelectScene();
 
             EnsoGameScene = new EnsoGameScene();
             EnsoGameScene.NowPlayingSong = data;
@@ -99,6 +116,8 @@ namespace TaikoDxlib.TaikoDxlib.Common
         }
 
         public static FPSCounter fps;
+        public static SongLoadingScene SongLoadingScene;
+        public static SongSelectScene SongSelectScene;
         public static EnsoGameScene EnsoGameScene;
 
         public static TJA TJA;

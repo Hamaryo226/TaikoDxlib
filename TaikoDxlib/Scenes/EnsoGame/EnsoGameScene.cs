@@ -23,12 +23,18 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
             ctGameCounter = new Counter(-3000, 100000000000, 1000, false);
             ctGameCounter.Start();
 
+            ctJudgeDisplayCounter = new Counter(0, 500, 1000, false);
+
             string TJADirectory = NowPlayingSong.Header.Path.Replace(Path.GetFileName(NowPlayingSong.Header.Path), "\\");
             PlaySound = new Sound(TJADirectory + NowPlayingSong.Header.Wave);
 
             AddChildScene(Lane = new EnsoGame_Lane());
             AddChildScene(Gauge = new EnsoGame_Gauge());
             AddChildScene(MiniTaiko = new EnsoGame_MiniTaiko());
+            AddChildScene(Footer = new EnsoGame_Footer());
+
+            // Initialize FontRender for displaying judgment results
+            judgeFontRender = new FontRender(new FontFamily("MS Gothic"), 28, 2, FontStyle.Bold);
 
             base.Enable();
         }
@@ -105,11 +111,11 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
                     }
                     else if (now_chip.NoteType == SongData.NoteType.BalloonStart)
                     {
-                        if(chip_x >= 0)
+                        if (chip_x >= 0)
                         {
                             ResourceLoader.EnsoGame_Notes.Draw(notes_x + chip_x, notes_y, new Rectangle(195 * 11, 0, 195 * 2, 195));
                         }
-                        else if(chip_x <= 0 && chip_end_x >= 0)
+                        else if (chip_x <= 0 && chip_end_x >= 0)
                         {
                             ResourceLoader.EnsoGame_Notes.Draw(notes_x, notes_y, new Rectangle(195 * 11, 0, 195 * 2, 195));
                         }
@@ -120,11 +126,11 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
                     }
                 }
 
-                if(chip_x <= 0)
+                if (chip_x <= 0)
                 {
-                    if(IsAuto)
+                    if (IsAuto)
                     {
-                        if(!now_chip.IsHit)
+                        if (!now_chip.IsHit)
                         {
                             if (now_chip.NoteType == SongData.NoteType.Don || now_chip.NoteType == SongData.NoteType.DON)
                             {
@@ -138,12 +144,66 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
                             }
                         }
                     }
+                    else if (chip_x < -JUDGMENT_MISS_RANGE)
+                    {
+                        // ノートを見逃した時
+                        if (!now_chip.IsHit && IsNormalNote(now_chip.NoteType))
+                        {
+                            currentCombo = 0;
+                            now_chip.IsHit = true;
+
+                            // 見逃し表示
+                            currentJudgment = Judgment.Bad;
+                            ctJudgeDisplayCounter.Reset();
+                            ctJudgeDisplayCounter.Start();
+                        }
+                    }
                 }
             }
 
             #endregion
 
             MiniTaiko.Draw();
+
+            #region [ 判定表示 ]
+            if (ctJudgeDisplayCounter.State == TimerState.Started && ctJudgeDisplayCounter.Value < ctJudgeDisplayCounter.End)
+            {
+                Color judgementColor;
+                switch (currentJudgment)
+                {
+                    case Judgment.Perfect: // 良
+                        judgementColor = Color.Gold;
+                        break;
+                    case Judgment.Ok: // 可
+                        judgementColor = Color.White;
+                        break;
+                    case Judgment.Bad: // 不可
+                        judgementColor = Color.Red;
+                        break;
+                    default:
+                        judgementColor = Color.White;
+                        break;
+                }
+
+                string judgementText = GetJudgmentText(currentJudgment);
+
+                // 判定表示
+                judgeFontRender.ForeColor = judgementColor;
+                Texture judgmentTexture = judgeFontRender.GetTexture(judgementText);
+                judgmentTexture.Draw(630, 220);
+
+
+            }
+            // コンボ表示
+            if (currentCombo > 1)
+            {
+                judgeFontRender.ForeColor = Color.White;
+                Texture comboTexture = judgeFontRender.GetTexture($"{currentCombo} コンボ");
+                comboTexture.Draw(630, 260);
+            }
+            #endregion
+
+            Footer.Draw();
 
             base.Draw();
         }
@@ -156,18 +216,41 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
             ctGameCounter.Tick();
             NowGameTime = ctGameCounter.Value + (long)(NowPlayingSong.Header.OFFSET * 1000);
 
-            if (KeyBind.IsPushedSystemKey(KeyBind.DON_LEFT_1P) || KeyBind.IsPushedSystemKey(KeyBind.DON_RIGHT_1P))
+            if (ctJudgeDisplayCounter.State == TimerState.Started)
             {
-                ResourceLoader.sndDon.Play();
-            }
-            if (KeyBind.IsPushedSystemKey(KeyBind.KA_LEFT_1P) || KeyBind.IsPushedSystemKey(KeyBind.KA_RIGHT_1P))
-            {
-                ResourceLoader.sndKa.Play();
+                ctJudgeDisplayCounter.Tick();
             }
 
-            if(!isMusicPlayed)
+            if (!IsAuto)
             {
-                if(ctGameCounter.Value >= 0)
+                // Don note hit
+                if (KeyBind.IsPushedSystemKey(KeyBind.DON_LEFT_1P) || KeyBind.IsPushedSystemKey(KeyBind.DON_RIGHT_1P))
+                {
+                    ResourceLoader.sndDon.Play();
+                    ProcessNoteHit(true); // true = Don hit
+                }
+                // Ka note hit
+                if (KeyBind.IsPushedSystemKey(KeyBind.KA_LEFT_1P) || KeyBind.IsPushedSystemKey(KeyBind.KA_RIGHT_1P))
+                {
+                    ResourceLoader.sndKa.Play();
+                    ProcessNoteHit(false); // false = Ka hit
+                }
+            }
+            else
+            {
+                if (KeyBind.IsPushedSystemKey(KeyBind.DON_LEFT_1P) || KeyBind.IsPushedSystemKey(KeyBind.DON_RIGHT_1P))
+                {
+                    ResourceLoader.sndDon.Play();
+                }
+                if (KeyBind.IsPushedSystemKey(KeyBind.KA_LEFT_1P) || KeyBind.IsPushedSystemKey(KeyBind.KA_RIGHT_1P))
+                {
+                    ResourceLoader.sndKa.Play();
+                }
+            }
+
+            if (!isMusicPlayed)
+            {
+                if (ctGameCounter.Value >= 0)
                 {
                     this.PlaySound.Play(true);
                     isMusicPlayed = true;
@@ -177,15 +260,156 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
             base.Update();
         }
 
-        private bool IsAuto = true;
+        /// <summary>
+        /// 通常ノートかどうかをチェックする
+        /// </summary>
+        private bool IsNormalNote(SongData.NoteType noteType)
+        {
+            return noteType == SongData.NoteType.Don ||
+                   noteType == SongData.NoteType.Ka ||
+                   noteType == SongData.NoteType.DON ||
+                   noteType == SongData.NoteType.KA;
+        }
 
+        /// <summary>
+        /// ドンのノートかどうかをチェックする
+        /// </summary>
+        private bool IsDonNote(SongData.NoteType noteType)
+        {
+            return noteType == SongData.NoteType.Don || noteType == SongData.NoteType.DON;
+        }
+
+        /// <summary>
+        /// カのノートかどうかをチェックする
+        /// </summary>
+        private bool IsKaNote(SongData.NoteType noteType)
+        {
+            return noteType == SongData.NoteType.Ka || noteType == SongData.NoteType.KA;
+        }
+
+        /// <summary>
+        /// ノートヒット処理
+        /// </summary>
+        private void ProcessNoteHit(bool isDon)
+        {
+            SongData.Chip nearestChip = null;
+            int nearestDistance = int.MaxValue;
+
+            // 判定範囲内の最も近いノートを探す
+            for (int i = 0; i < NowPlayingSong.SongCourses[NowPlayingCourse].Chips.Count; i++)
+            {
+                var chip = NowPlayingSong.SongCourses[NowPlayingCourse].Chips[i];
+
+                if (chip.IsHit || !IsNormalNote(chip.NoteType))
+                    continue;
+
+                // ノートの時間差を計算
+                int timeDistance = (int)(chip.Time - NowGameTime);
+
+                // 判定範囲外ならスキップ
+                if (Math.Abs(timeDistance) > JUDGMENT_MISS_RANGE)
+                    continue;
+
+                // ノートタイプが一致しているかチェック
+                bool isCorrectNote = (isDon && IsDonNote(chip.NoteType)) ||
+                                    (!isDon && IsKaNote(chip.NoteType));
+
+                if (!isCorrectNote)
+                    continue;
+
+                // より近いノートを見つけた場合、更新
+                if (Math.Abs(timeDistance) < Math.Abs(nearestDistance))
+                {
+                    nearestChip = chip;
+                    nearestDistance = timeDistance;
+                }
+            }
+
+            // 最も近いノートが見つかった場合
+            if (nearestChip != null)
+            {
+                // 判定の決定
+                Judgment judgment;
+
+                int timeDistance = Math.Abs(nearestDistance);
+
+                if (timeDistance <= JUDGMENT_PERFECT_RANGE)
+                {
+                    judgment = Judgment.Perfect; // 良
+                    currentCombo++;
+                }
+                else if (timeDistance <= JUDGMENT_OK_RANGE)
+                {
+                    judgment = Judgment.Ok; // 可
+                    currentCombo++;
+                }
+                else
+                {
+                    judgment = Judgment.Bad; // 不可
+                    currentCombo = 0;
+                }
+
+                // 判定結果の表示
+                currentJudgment = judgment;
+                ctJudgeDisplayCounter.Reset();
+                ctJudgeDisplayCounter.Start();
+
+                // ノートを叩いたのでフラグを立てる
+                nearestChip.IsHit = true;
+            }
+            else
+            {
+                // 空打ち時
+                //ctJudgeDisplayCounter.Reset();
+                //ctJudgeDisplayCounter.Start();
+            }
+        }
+
+        /// <summary>
+        /// 判定に応じたテキストを返す
+        /// </summary>
+        private string GetJudgmentText(Judgment judgment)
+        {
+            switch (judgment)
+            {
+                case Judgment.Perfect:
+                    return "良";
+                case Judgment.Ok:
+                    return "可";
+                case Judgment.Bad:
+                    return "不可";
+                default:
+                    return "";
+            }
+        }
+
+        // 判定種類
+        private enum Judgment
+        {
+            None,
+            Perfect, // 良
+            Ok,      // 可
+            Bad      // 不可
+        }
+
+        // 判定タイミング (ミリ秒単位)
+        private const int JUDGMENT_PERFECT_RANGE = 25;  // 良判定の範囲（±34ms）
+        private const int JUDGMENT_OK_RANGE = 75;       // 可判定の範囲（±84ms）
+        private const int JUDGMENT_MISS_RANGE = 108;    // 見逃し判定の範囲（±134ms）
+
+        private bool IsAuto = false; // オートプレイをオフにする
         private Counter ctGameCounter;
+        private Counter ctJudgeDisplayCounter;
         private long NowGameTime;
+        private Judgment currentJudgment = Judgment.None;
+        private int currentCombo = 0;
+        private FontRender judgeFontRender;
 
         private bool isMusicPlayed;
 
         public EnsoGame_Lane Lane;
         public EnsoGame_Gauge Gauge;
         public EnsoGame_MiniTaiko MiniTaiko;
+        public EnsoGame_Footer Footer;
     }
 }
