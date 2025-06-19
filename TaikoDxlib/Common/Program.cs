@@ -66,7 +66,7 @@ namespace TaikoDxlib.TaikoDxlib.Common
             SetUseTransColor(FALSE);
             SetWindowText("TaikoDxlib β0.0.1");
             SetGraphMode(1920, 1080, 32);
-            SetWindowSize(1280, 720);
+            SetWindowSize(1920, 1080);
             ChangeWindowMode(TRUE);
             SetWindowSizeChangeEnableFlag(TRUE);
             SetAlwaysRunFlag(TRUE);
