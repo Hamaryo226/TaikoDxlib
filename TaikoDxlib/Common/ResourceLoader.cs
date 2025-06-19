@@ -23,7 +23,7 @@ namespace TaikoDxlib.TaikoDxlib.Common
             EnsoGame_MiniTaiko_Taiko_Don = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\MiniTaiko\Don.png");
             EnsoGame_MiniTaiko_Taiko_Ka = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\MiniTaiko\Ka.png");
 
-            #endregion]
+            #endregion
 
             #region [ Footer ]
             EnsoGame_Footer = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\Footer\0.png");
