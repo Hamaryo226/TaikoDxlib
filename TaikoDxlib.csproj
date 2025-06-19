@@ -47,6 +47,8 @@
     <Compile Include="TaikoDxlib\Scenes\EnsoGame\EnsoGame_Gauge.cs" />
     <Compile Include="TaikoDxlib\Scenes\EnsoGame\EnsoGame_Lane.cs" />
     <Compile Include="TaikoDxlib\Scenes\EnsoGame\EnsoGame_MiniTaiko.cs" />
+    <Compile Include="TaikoDxlib\Scenes\SongLoading\SongLoadingScene.cs" />
+    <Compile Include="TaikoDxlib\Scenes\SongSelect\SongSelectScene.cs" />
     <Compile Include="TaikoDxlib\SongSystem\SongData.cs" />
     <Compile Include="TaikoDxlib\SongSystem\TJA.cs" />
   </ItemGroup>
