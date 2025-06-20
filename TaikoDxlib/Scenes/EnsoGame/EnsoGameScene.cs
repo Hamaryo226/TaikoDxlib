@@ -12,7 +12,7 @@ using TaikoDxlib.TaikoDxlib.SongSystem;
 
 namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
 {
-    internal class EnsoGameScene : Scene
+    internal class EnsoGameScene : Scene, IDisposable
     {
         public SongData.Song NowPlayingSong;
         public Sound PlaySound;
@@ -20,6 +20,9 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
 
         public override void Enable()
         {
+            // リソースのクリーンアップ
+            CleanupResources();
+
             ctGameCounter = new Counter(-3000, 100000000000, 1000, false);
             ctGameCounter.Start();
 
@@ -36,12 +39,67 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
             // Initialize FontRender for displaying judgment results
             judgeFontRender = new FontRender(new FontFamily("MS Gothic"), 28, 2, FontStyle.Bold);
 
+            // Initialize texture cache
+            textureCache = new Dictionary<string, Texture>();
+
+            isMusicPlayed = false;
+            currentCombo = 0;
+            currentJudgment = Judgment.None;
+
             base.Enable();
         }
 
         public override void Disable()
         {
+            // Stop playing sound
+            if (PlaySound != null && PlaySound.IsPlaying)
+            {
+                PlaySound.Stop();
+            }
+
+            CleanupResources();
+
             base.Disable();
+        }
+
+        public void Dispose()
+        {
+            CleanupResources();
+
+            // Clear child scenes explicitly
+            Lane = null;
+            Gauge = null;
+            MiniTaiko = null;
+            Footer = null;
+
+            NowPlayingSong = null;
+            ctGameCounter = null;
+            ctJudgeDisplayCounter = null;
+            judgeFontRender = null;
+        }
+
+        private void CleanupResources()
+        {
+            // Dispose of the sound
+            if (PlaySound != null)
+            {
+                if (PlaySound.IsPlaying)
+                {
+                    PlaySound.Stop();
+                }
+                PlaySound.Dispose();
+                PlaySound = null;
+            }
+
+            // Dispose of cached textures
+            if (textureCache != null)
+            {
+                foreach (var texture in textureCache.Values)
+                {
+                    texture?.Dispose();
+                }
+                textureCache.Clear();
+            }
         }
 
         public override void Draw()
@@ -189,16 +247,49 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
 
                 // 判定表示
                 judgeFontRender.ForeColor = judgementColor;
-                Texture judgmentTexture = judgeFontRender.GetTexture(judgementText);
+
+                // キャッシュからテクスチャを取得または作成
+                string judgmentKey = $"judgment_{currentJudgment}";
+                Texture judgmentTexture;
+
+                if (!textureCache.TryGetValue(judgmentKey, out judgmentTexture) || judgmentTexture == null)
+                {
+                    judgmentTexture = judgeFontRender.GetTexture(judgementText);
+                    textureCache[judgmentKey] = judgmentTexture;
+                }
+
                 judgmentTexture.Draw(630, 220);
-
-
             }
+
             // コンボ表示
             if (currentCombo > 1)
             {
                 judgeFontRender.ForeColor = Color.White;
-                Texture comboTexture = judgeFontRender.GetTexture($"{currentCombo} コンボ");
+
+                // コンボテキストはコンボ数が変わるたびに更新が必要
+                string comboKey = $"combo_{currentCombo}";
+                Texture comboTexture;
+
+                if (!textureCache.TryGetValue(comboKey, out comboTexture) || comboTexture == null)
+                {
+                    comboTexture = judgeFontRender.GetTexture($"{currentCombo} コンボ");
+
+                    // 古いコンボテクスチャをクリーンアップ
+                    foreach (var key in new List<string>(textureCache.Keys))
+                    {
+                        if (key.StartsWith("combo_") && key != comboKey)
+                        {
+                            if (textureCache[key] != null)
+                            {
+                                textureCache[key].Dispose();
+                            }
+                            textureCache.Remove(key);
+                        }
+                    }
+
+                    textureCache[comboKey] = comboTexture;
+                }
+
                 comboTexture.Draw(630, 260);
             }
             #endregion
@@ -252,7 +343,10 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
             {
                 if (ctGameCounter.Value >= 0)
                 {
-                    this.PlaySound.Play(true);
+                    if (PlaySound != null && !PlaySound.IsPlaying)
+                    {
+                        PlaySound.Play(true);
+                    }
                     isMusicPlayed = true;
                 }
             }
@@ -406,6 +500,7 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
         private FontRender judgeFontRender;
 
         private bool isMusicPlayed;
+        private Dictionary<string, Texture> textureCache;
 
         public EnsoGame_Lane Lane;
         public EnsoGame_Gauge Gauge;

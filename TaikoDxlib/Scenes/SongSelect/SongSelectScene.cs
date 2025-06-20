@@ -15,7 +15,7 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.SongSelect
     /// <summary>
     /// 曲選択シーン
     /// </summary>
-    internal class SongSelectScene : Scene
+    internal class SongSelectScene : Scene, IDisposable
     {
         // 曲情報を格納するクラス
         private class SongEntry
@@ -37,10 +37,20 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.SongSelect
         private FontRender subtitleFontRenderer;
         private FontRender messageFontRenderer;
 
+        // テクスチャキャッシュ
+        private Dictionary<string, Texture> textureCache = new Dictionary<string, Texture>();
+
+        public SongSelectScene()
+        {
+            songList = new List<SongEntry>();
+            currentSongIndex = 0;
+        }
+
         public override void Enable()
         {
             // 初期化
-            songList = new List<SongEntry>();
+            songList.Clear();
+            textureCache.Clear();
             currentSongIndex = 0;
 
             // フォントレンダラーの初期化
@@ -57,8 +67,33 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.SongSelect
         public override void Disable()
         {
             // リソースの解放
+            DisposeCachedTextures();
             songList.Clear();
+
             base.Disable();
+        }
+
+        public void Dispose()
+        {
+            DisposeCachedTextures();
+            songList?.Clear();
+            songList = null;
+            textureCache = null;
+            titleFontRenderer = null;
+            subtitleFontRenderer = null;
+            messageFontRenderer = null;
+        }
+
+        private void DisposeCachedTextures()
+        {
+            if (textureCache != null)
+            {
+                foreach (var texture in textureCache.Values)
+                {
+                    texture?.Dispose();
+                }
+                textureCache.Clear();
+            }
         }
 
         public override void Draw()
@@ -68,14 +103,14 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.SongSelect
 
             // ヘッダータイトル
             titleFontRenderer.ForeColor = Color.White;
-            Texture headerTexture = titleFontRenderer.GetTexture("曲選択");
+            Texture headerTexture = GetCachedTexture("header", () => titleFontRenderer.GetTexture("曲選択"));
             headerTexture.Draw(50, 50);
 
             if (songList.Count == 0)
             {
                 // 曲が見つからない場合のメッセージ
                 messageFontRenderer.ForeColor = Color.White;
-                Texture noSongsTexture = messageFontRenderer.GetTexture("曲が見つかりません。Songs/ディレクトリに.tjaファイルを配置してください。");
+                Texture noSongsTexture = GetCachedTexture("noSongs", () => messageFontRenderer.GetTexture("曲が見つかりません。Songs/ディレクトリに.tjaファイルを配置してください。"));
                 noSongsTexture.Draw((1920 - noSongsTexture.TextureSize.Width) / 2, 400);
                 return;
             }
@@ -101,24 +136,34 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.SongSelect
                 }
 
                 // 曲タイトル
-                Texture songTitleTexture = titleFontRenderer.GetTexture(song.Title);
+                Texture songTitleTexture = GetCachedTexture($"title_{i}", () => titleFontRenderer.GetTexture(song.Title));
                 songTitleTexture.Draw(60, y);
 
                 // サブタイトルがあれば表示
                 if (!string.IsNullOrEmpty(song.Subtitle))
                 {
                     subtitleFontRenderer.ForeColor = Color.LightGray;
-                    Texture subtitleTexture = subtitleFontRenderer.GetTexture(song.Subtitle);
+                    Texture subtitleTexture = GetCachedTexture($"subtitle_{i}", () => subtitleFontRenderer.GetTexture(song.Subtitle));
                     subtitleTexture.Draw(60, y + 38);
                 }
             }
 
             // 操作方法の表示
             subtitleFontRenderer.ForeColor = Color.White;
-            Texture instructionTexture = subtitleFontRenderer.GetTexture("↑↓: 選択  Enter: 決定");
+            Texture instructionTexture = GetCachedTexture("instruction", () => subtitleFontRenderer.GetTexture("↑↓: 選択  Enter: 決定"));
             instructionTexture.Draw(60, 1000);
 
             base.Draw();
+        }
+
+        private Texture GetCachedTexture(string key, Func<Texture> textureFactory)
+        {
+            if (!textureCache.TryGetValue(key, out Texture texture) || texture == null)
+            {
+                texture = textureFactory();
+                textureCache[key] = texture;
+            }
+            return texture;
         }
 
         public override void Update()
@@ -152,7 +197,7 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.SongSelect
         {
             // 実行ファイルのディレクトリを取得
             string baseDirectory = Directory.GetCurrentDirectory();
-            
+
             // Songs ディレクトリのパス
             string songsDirectory = Path.Combine(baseDirectory, "Songs");
 
