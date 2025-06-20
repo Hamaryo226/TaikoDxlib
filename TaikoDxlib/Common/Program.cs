@@ -11,8 +11,8 @@ using TaikoDxlib.TaikoDxlib.Scenes.EnsoGame;
 using TaikoDxlib.TaikoDxlib.SongSystem;
 using static DxLibDLL.DX;
 using static TaikoDxlib.TaikoDxlib.Common.Program;
-using TaikoNaut.TaikoDxlib.Scenes.SongSelect;
-using TaikoNaut.TaikoDxlib.Scenes.SongLoading;
+using TaikoDxlib.TaikoDxlib.Scenes.SongSelect;
+using TaikoDxlib.TaikoDxlib.Scenes.SongLoading;
 
 namespace TaikoDxlib.TaikoDxlib.Common
 {
@@ -22,7 +22,7 @@ namespace TaikoDxlib.TaikoDxlib.Common
         {
             Program_Initialize();
 
-            while(ProcessMessage() == 0)
+            while (ProcessMessage() == 0)
             {
                 ClearDrawScreen();
 
@@ -59,7 +59,15 @@ namespace TaikoDxlib.TaikoDxlib.Common
                 if (Key.IsPushed(KEY_INPUT_F12))
                 {
                     DateTime dt = DateTime.Now;
-                    SaveDrawScreenToPNG(0, 0, 1920, 1080, "ScreenShot\\" + dt.ToString("yyyyMMddHHmmss") + ".png");
+                    string screenshotDir = "ScreenShot";
+
+                    // スクリーンショットディレクトリがなければ作成
+                    if (!Directory.Exists(screenshotDir))
+                    {
+                        Directory.CreateDirectory(screenshotDir);
+                    }
+
+                    SaveDrawScreenToPNG(0, 0, 1920, 1080, Path.Combine(screenshotDir, dt.ToString("yyyyMMddHHmmss") + ".png"));
                 }
 
                 ScreenFlip();
@@ -93,25 +101,35 @@ namespace TaikoDxlib.TaikoDxlib.Common
 
             #endregion
 
+            // 必要なリソースのロード
             ResourceLoader.LoadTexture();
             ResourceLoader.LoadSound();
 
+            // FPSカウンターの初期化
             fps = new FPSCounter();
 
+            // TJAパーサーの初期化
             TJA = new TJA();
 
-            var data = TJA.GetSongDataFromTJA("C:\\Users\\hama\\Desktop\\TaikoDxlib-master\\Build\\Songs\\灼熱にて純情(wii-wii-woo)\\灼熱にて純情(wii-wii-woo).tja");
-
+            // シーンの初期化
             SongLoadingScene = new SongLoadingScene();
             SongSelectScene = new SongSelectScene();
-
             EnsoGameScene = new EnsoGameScene();
-            EnsoGameScene.NowPlayingSong = data;
-            EnsoGameScene.Enable();
+
+            // 最初のシーンをセット
+            SongSelectScene.Enable();
+
+            // 曲選択シーンから始める
+            nowScene = NowScene.SongSelect;
         }
 
         static void Program_Finalize()
         {
+            // シーンのクリーンアップ
+            if (SongSelectScene != null) SongSelectScene.Disable();
+            if (SongLoadingScene != null) SongLoadingScene.Disable();
+            if (EnsoGameScene != null) EnsoGameScene.Disable();
+
             DxLib_End();
         }
 
@@ -122,7 +140,7 @@ namespace TaikoDxlib.TaikoDxlib.Common
 
         public static TJA TJA;
 
-        public static NowScene nowScene = NowScene.EnsoGame;
+        public static NowScene nowScene = NowScene.SongSelect;
 
         public enum NowScene
         {
