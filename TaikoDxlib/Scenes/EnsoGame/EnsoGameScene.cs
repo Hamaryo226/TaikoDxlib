@@ -331,11 +331,11 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
             {
                 if (KeyBind.IsPushedSystemKey(KeyBind.DON_LEFT_1P) || KeyBind.IsPushedSystemKey(KeyBind.DON_RIGHT_1P))
                 {
-                    ResourceLoader.sndDon.Play();
+                    //ResourceLoader.sndDon.Play();
                 }
                 if (KeyBind.IsPushedSystemKey(KeyBind.KA_LEFT_1P) || KeyBind.IsPushedSystemKey(KeyBind.KA_RIGHT_1P))
                 {
-                    ResourceLoader.sndKa.Play();
+                    //ResourceLoader.sndKa.Play();
                 }
             }
 
@@ -450,12 +450,6 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.EnsoGame
 
                 // ノートを叩いたのでフラグを立てる
                 nearestChip.IsHit = true;
-            }
-            else
-            {
-                // 空打ち時
-                //ctJudgeDisplayCounter.Reset();
-                //ctJudgeDisplayCounter.Start();
             }
         }
 
