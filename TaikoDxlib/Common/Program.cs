@@ -20,60 +20,69 @@ namespace TaikoDxlib.TaikoDxlib.Common
     {
         static void Main()
         {
-            Program_Initialize();
-
-            while (ProcessMessage() == 0)
+            try
             {
-                ClearDrawScreen();
+                Program_Initialize();
 
-                DrawBox(0, 0, 1920, 1080, GetColor(0, 0, 0), TRUE);
-
-                Key.Update();
-
-                switch (nowScene)
+                while (ProcessMessage() == 0)
                 {
-                    case NowScene.SongSelect:
-                        {
-                            SongSelectScene.Draw();
-                            SongSelectScene.Update();
-                        }
-                        break;
-                    case NowScene.SongLoading:
-                        {
-                            SongLoadingScene.Draw();
-                            SongLoadingScene.Update();
-                        }
-                        break;
-                    case NowScene.EnsoGame:
-                        {
-                            EnsoGameScene.Draw();
-                            EnsoGameScene.Update();
-                        }
-                        break;
-                }
+                    ClearDrawScreen();
 
-                fps.Update();
+                    DrawBox(0, 0, 1920, 1080, GetColor(0, 0, 0), TRUE);
 
-                Debug.tprint(0, 0, fps.FPS.ToString());
+                    Key.Update();
 
-                if (Key.IsPushed(KEY_INPUT_F12))
-                {
-                    DateTime dt = DateTime.Now;
-                    string screenshotDir = "ScreenShot";
-
-                    // スクリーンショットディレクトリがなければ作成
-                    if (!Directory.Exists(screenshotDir))
+                    switch (nowScene)
                     {
-                        Directory.CreateDirectory(screenshotDir);
+                        case NowScene.SongSelect:
+                            {
+                                SongSelectScene.Draw();
+                                SongSelectScene.Update();
+                            }
+                            break;
+                        case NowScene.SongLoading:
+                            {
+                                SongLoadingScene.Draw();
+                                SongLoadingScene.Update();
+                            }
+                            break;
+                        case NowScene.EnsoGame:
+                            {
+                                EnsoGameScene.Draw();
+                                EnsoGameScene.Update();
+                            }
+                            break;
                     }
 
-                    SaveDrawScreenToPNG(0, 0, 1920, 1080, Path.Combine(screenshotDir, dt.ToString("yyyyMMddHHmmss") + ".png"));
+                    fps.Update();
+
+                    Debug.tprint(0, 0, fps.FPS.ToString());
+
+                    if (Key.IsPushed(KEY_INPUT_F12))
+                    {
+                        DateTime dt = DateTime.Now;
+                        string screenshotDir = "ScreenShot";
+
+                        // スクリーンショットディレクトリがなければ作成
+                        if (!Directory.Exists(screenshotDir))
+                        {
+                            Directory.CreateDirectory(screenshotDir);
+                        }
+
+                        SaveDrawScreenToPNG(0, 0, 1920, 1080, Path.Combine(screenshotDir, dt.ToString("yyyyMMddHHmmss") + ".png"));
+                    }
+
+                    ScreenFlip();
                 }
-
-                ScreenFlip();
             }
-
-            Program_Finalize();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"予期せぬエラーが発生しました: {ex.Message}\n{ex.StackTrace}");
+            }
+            finally
+            {
+                Program_Finalize();
+            }
         }
 
         static void Program_Initialize()
@@ -125,12 +134,51 @@ namespace TaikoDxlib.TaikoDxlib.Common
 
         static void Program_Finalize()
         {
-            // シーンのクリーンアップ
-            if (SongSelectScene != null) SongSelectScene.Disable();
-            if (SongLoadingScene != null) SongLoadingScene.Disable();
-            if (EnsoGameScene != null) EnsoGameScene.Disable();
-
-            DxLib_End();
+            try
+            {
+                // シーンのクリーンアップ
+                if (EnsoGameScene != null)
+                {
+                    EnsoGameScene.Disable();
+                    (EnsoGameScene as IDisposable)?.Dispose();
+                    EnsoGameScene = null;
+                }
+                
+                if (SongLoadingScene != null)
+                {
+                    SongLoadingScene.Disable();
+                    (SongLoadingScene as IDisposable)?.Dispose();
+                    SongLoadingScene = null;
+                }
+                
+                if (SongSelectScene != null)
+                {
+                    SongSelectScene.Disable();
+                    (SongSelectScene as IDisposable)?.Dispose();
+                    SongSelectScene = null;
+                }
+                
+                // グローバルリソースのクリーンアップ
+                ResourceLoader.ReleaseAllResources();
+                
+                // TJAのクリーンアップ
+                TJA = null;
+                
+                // FPSカウンターのクリーンアップ
+                fps = null;
+                
+                // GCによるメモリ回収を促進
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"終了処理中にエラーが発生しました: {ex.Message}\n{ex.StackTrace}");
+            }
+            finally
+            {
+                DxLib_End();
+            }
         }
 
         public static FPSCounter fps;

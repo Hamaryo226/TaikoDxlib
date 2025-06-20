@@ -15,13 +15,16 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.SongLoading
     /// <summary>
     /// 曲読み込み中シーン
     /// </summary>
-    internal class SongLoadingScene : Scene
+    internal class SongLoadingScene : Scene, IDisposable
     {
         public override void Enable()
         {
             // 初期化
             loadingCounter = new Counter(0, 3000, 1000, false); // 3秒間の表示
             loadingCounter.Start();
+            
+            // テクスチャのクリア
+            CleanupTextures();
             
             // フォントレンダラーの初期化
             titleFontRenderer = new FontRender(new FontFamily("MS Gothic"), 48, 2, FontStyle.Bold);
@@ -43,9 +46,47 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.SongLoading
 
         public override void Disable()
         {
-            titleTexture = null;
-            subtitleTexture = null;
+            CleanupTextures();
             base.Disable();
+        }
+
+        public void Dispose()
+        {
+            CleanupTextures();
+            titleFontRenderer = null;
+            subtitleFontRenderer = null;
+            currentSong = null;
+            loadingCounter = null;
+        }
+
+        private void CleanupTextures()
+        {
+            // テクスチャのクリーンアップ
+            if (titleTexture != null)
+            {
+                titleTexture.Dispose();
+                titleTexture = null;
+            }
+            
+            if (subtitleTexture != null)
+            {
+                subtitleTexture.Dispose();
+                subtitleTexture = null;
+            }
+            
+            // 一時的なテクスチャを格納するためのディクショナリ
+            if (tempTextures != null)
+            {
+                foreach (var texture in tempTextures.Values)
+                {
+                    texture?.Dispose();
+                }
+                tempTextures.Clear();
+            }
+            else
+            {
+                tempTextures = new Dictionary<string, Texture>();
+            }
         }
 
         public override void Draw()
@@ -88,7 +129,17 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.SongLoading
             
             // 読み込み中テキスト
             subtitleFontRenderer.ForeColor = Color.White;
-            Texture loadingText = subtitleFontRenderer.GetTexture("読み込み中...");
+            
+            // 既存のテクスチャがあればそれを再利用し、なければ新規に作成
+            string loadingKey = "loading_text";
+            Texture loadingText;
+            
+            if (!tempTextures.TryGetValue(loadingKey, out loadingText) || loadingText == null)
+            {
+                loadingText = subtitleFontRenderer.GetTexture("読み込み中...");
+                tempTextures[loadingKey] = loadingText;
+            }
+            
             loadingText.Draw(progressX, progressY + 40);
             
             base.Draw();
@@ -188,7 +239,17 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.SongLoading
             
             // 難易度表示
             subtitleFontRenderer.ForeColor = diffColor;
-            Texture diffText = subtitleFontRenderer.GetTexture($"難易度: {diffName} ★{level}");
+            
+            // 難易度テキスト用のキー
+            string diffKey = $"diff_{diffName}_{level}";
+            Texture diffText;
+            
+            if (!tempTextures.TryGetValue(diffKey, out diffText) || diffText == null)
+            {
+                diffText = subtitleFontRenderer.GetTexture($"難易度: {diffName} ★{level}");
+                tempTextures[diffKey] = diffText;
+            }
+            
             int diffX = (1920 - diffText.TextureSize.Width) / 2;
             diffText.Draw(diffX, 530);
         }
@@ -200,5 +261,6 @@ namespace TaikoDxlib.TaikoDxlib.Scenes.SongLoading
         private FontRender subtitleFontRenderer;
         private Texture titleTexture;
         private Texture subtitleTexture;
+        private Dictionary<string, Texture> tempTextures = new Dictionary<string, Texture>();
     }
 }
