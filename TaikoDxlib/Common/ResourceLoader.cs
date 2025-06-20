@@ -32,7 +32,7 @@ namespace TaikoDxlib.TaikoDxlib.Common
             EnsoGame_MiniTaiko_Taiko_Don = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\MiniTaiko\Don.png");
             EnsoGame_MiniTaiko_Taiko_Ka = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\MiniTaiko\Ka.png");
 
-            #endregion
+            #endregion]
 
             #region [ Footer ]
             EnsoGame_Footer = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\Footer\0.png");
@@ -76,64 +76,19 @@ namespace TaikoDxlib.TaikoDxlib.Common
         /// </summary>
         public static void ReleaseTextures()
         {
-            if (EnsoGame_Notes != null)
-            {
-                EnsoGame_Notes.Dispose();
-                EnsoGame_Notes = null;
-            }
-            
-            if (EnsoGame_MiniTaiko_Background_1P != null)
-            {
-                EnsoGame_MiniTaiko_Background_1P.Dispose();
-                EnsoGame_MiniTaiko_Background_1P = null;
-            }
-            
-            if (EnsoGame_MiniTaiko_Taiko != null)
-            {
-                EnsoGame_MiniTaiko_Taiko.Dispose();
-                EnsoGame_MiniTaiko_Taiko = null;
-            }
-            
-            if (EnsoGame_MiniTaiko_Taiko_Don != null)
-            {
-                EnsoGame_MiniTaiko_Taiko_Don.Dispose();
-                EnsoGame_MiniTaiko_Taiko_Don = null;
-            }
-            
-            if (EnsoGame_MiniTaiko_Taiko_Ka != null)
-            {
-                EnsoGame_MiniTaiko_Taiko_Ka.Dispose();
-                EnsoGame_MiniTaiko_Taiko_Ka = null;
-            }
-            
-            if (EnsoGame_Footer != null)
-            {
-                EnsoGame_Footer.Dispose();
-                EnsoGame_Footer = null;
-            }
-            
-            if (EnsoGame_Lane_Background_1P != null)
-            {
-                EnsoGame_Lane_Background_1P.Dispose();
-                EnsoGame_Lane_Background_1P = null;
-            }
+            // テクスチャフィールドをリフレクションで取得して一括で解放
+            var textureFields = typeof(ResourceLoader)
+                .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+                .Where(f => f.FieldType == typeof(Texture));
 
-            if (EnsoGame_Lane_Don != null)
+            foreach (var field in textureFields)
             {
-                EnsoGame_Lane_Don.Dispose();
-                EnsoGame_Lane_Don = null;
-            }
-
-            if (EnsoGame_Lane_Ka != null)
-            {
-                EnsoGame_Lane_Ka.Dispose();
-                EnsoGame_Lane_Ka = null;
-            }
-
-            if (EnsoGame_Lane_Go != null)
-            {
-                EnsoGame_Lane_Go.Dispose();
-                EnsoGame_Lane_Go = null;
+                var texture = field.GetValue(null) as Texture;
+                if (texture != null)
+                {
+                    texture.Dispose();
+                    field.SetValue(null, null);
+                }
             }
         }
 
