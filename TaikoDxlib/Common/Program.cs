@@ -94,7 +94,14 @@ namespace TaikoDxlib.TaikoDxlib.Common
                 SetUseASyncChangeWindowModeFunction(TRUE, null, null);
                 SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
             }
+            
+            // Enable alpha channel in PNG files
+            SetUsePremulAlphaConvertLoad(TRUE);
+            SetUseAlphaChannelGraphCreateFlag(TRUE);
+            
+            // Don't use transparent color as it interferes with alpha channels
             SetUseTransColor(FALSE);
+            
             SetWindowText("TaikoDxlib β0.0.1");
             SetGraphMode(1920, 1080, 32);
             SetWindowSize(1920, 1080);
@@ -103,7 +110,10 @@ namespace TaikoDxlib.TaikoDxlib.Common
             SetAlwaysRunFlag(TRUE);
             SetWaitVSyncFlag(FALSE);
             SetOutApplicationLogValidFlag(FALSE);
-            SetUseTransColor(FALSE);
+            
+            // Enable proper blending for alpha channels
+            SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+            
             SetDoubleStartValidFlag(TRUE);
             if (DxLib_Init() == -1) return;
             SetDrawScreen(DX_SCREEN_BACK);

@@ -1,4 +1,5 @@
 ﻿using Amaoto;
+using DxLibDLL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,9 @@ namespace TaikoDxlib.TaikoDxlib.Common
             // リソースの再読み込み前に既存のリソースをクリア
             ReleaseTextures();
             
+            // Enable alpha channel support before loading textures
+            DX.SetUsePremulAlphaConvertLoad(DX.TRUE);
+            
             EnsoGame_Notes = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\Notes.png");
 
             #region [ MiniTaiko ]
@@ -34,7 +38,37 @@ namespace TaikoDxlib.TaikoDxlib.Common
             EnsoGame_Footer = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\Footer\0.png");
             #endregion
 
+            #region [ Lane ]
             EnsoGame_Lane_Background_1P = new Texture(@"Skins\DefaultSkin\Image\04.EnsoGame\Lane\Background_1P.png");
+            
+            // Load hit effect textures with special care for transparency
+            EnsoGame_Lane_Don = LoadTextureWithAlpha(@"Skins\DefaultSkin\Image\04.EnsoGame\Lane\Red.png");
+            EnsoGame_Lane_Ka = LoadTextureWithAlpha(@"Skins\DefaultSkin\Image\04.EnsoGame\Lane\Blue.png");
+            EnsoGame_Lane_Go = LoadTextureWithAlpha(@"Skins\DefaultSkin\Image\04.EnsoGame\Lane\GoGo.png");
+            #endregion
+        }
+        
+        /// <summary>
+        /// テクスチャをアルファチャンネル付きで読み込みます
+        /// </summary>
+        private static Texture LoadTextureWithAlpha(string filePath)
+        {
+            // Save the current state
+            int prevFlag1 = DX.GetDrawValidGraphCreateFlag();
+            int prevFlag2 = DX.GetDrawValidAlphaChannelGraphCreateFlag();
+            
+            // Enable alpha channel for loading
+            DX.SetDrawValidGraphCreateFlag(DX.TRUE);
+            DX.SetDrawValidAlphaChannelGraphCreateFlag(DX.TRUE);
+            
+            // Load the texture
+            Texture tex = new Texture(filePath);
+            
+            // Restore previous state
+            DX.SetDrawValidGraphCreateFlag(prevFlag1);
+            DX.SetDrawValidAlphaChannelGraphCreateFlag(prevFlag2);
+            
+            return tex;
         }
 
         /// <summary>
@@ -83,6 +117,24 @@ namespace TaikoDxlib.TaikoDxlib.Common
                 EnsoGame_Lane_Background_1P.Dispose();
                 EnsoGame_Lane_Background_1P = null;
             }
+
+            if (EnsoGame_Lane_Don != null)
+            {
+                EnsoGame_Lane_Don.Dispose();
+                EnsoGame_Lane_Don = null;
+            }
+
+            if (EnsoGame_Lane_Ka != null)
+            {
+                EnsoGame_Lane_Ka.Dispose();
+                EnsoGame_Lane_Ka = null;
+            }
+
+            if (EnsoGame_Lane_Go != null)
+            {
+                EnsoGame_Lane_Go.Dispose();
+                EnsoGame_Lane_Go = null;
+            }
         }
 
         #region [ Public ]
@@ -102,7 +154,12 @@ namespace TaikoDxlib.TaikoDxlib.Common
         public static Texture EnsoGame_Footer;
         #endregion
 
+        #region [ Lane ]
         public static Texture EnsoGame_Lane_Background_1P;
+        public static Texture EnsoGame_Lane_Don;
+        public static Texture EnsoGame_Lane_Ka;
+        public static Texture EnsoGame_Lane_Go;
+        #endregion
 
         #endregion
 
